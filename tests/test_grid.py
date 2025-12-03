@@ -1,6 +1,6 @@
 import numpy as np
 
-from myplotlib.subplot import Grid, Subplot
+from myplotlib import Grid, Subplot
 
 if __name__ == '__main__':
   x = np.linspace(start=0, stop=10, num=200)

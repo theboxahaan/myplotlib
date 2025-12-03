@@ -5,6 +5,8 @@ import itertools
 
 from . import defaults
 
+__all__ = ['Subplot', 'Grid']
+
 def moving_average(arr:list[float]|np.ndarray=None, window_size:int=1, smooth_inital:bool=False) -> np.ndarray:
   """compute the sliding window average using np.convolve
   returns numpy array containing the smoothed plot
