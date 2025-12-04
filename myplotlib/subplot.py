@@ -85,7 +85,7 @@ class Subplot:
                    lw=defaults.lw_smoothed)
 
         start_idx = int(len(y_list) * 0.8) 
-        local_subset = y_list[start_idx:]
+        local_subset = y_smoothed[start_idx:]
         if len(local_subset) > 0:
             zoom_y_min = min(zoom_y_min, np.min(local_subset))
             zoom_y_max = max(zoom_y_max, np.max(local_subset))
@@ -93,7 +93,7 @@ class Subplot:
     if self.zoom:
       x1, x2 = x_max_global * 0.8, x_max_global
       ax_inset.set_xlim(x1, x2)
-      ax_inset.set_ylim(zoom_y_min, zoom_y_max)
+      ax_inset.set_ylim(zoom_y_min*(1-0.2), zoom_y_max*(1+0.2))
       mark_inset(ax, ax_inset, loc1=2, loc2=4, fc="none", ec="0.5")
 
     for x in self.VX:
