@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 import itertools
+from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 
 from . import defaults
 
@@ -58,16 +59,43 @@ class Subplot:
     ax.ticklabel_format(style='sci',scilimits=(0,0),axis='x')
     ax.tick_params(axis='y', which='both', colors="black", labelrotation=0)
     ax.spines['left'].set_color('black')
-    ax.grid(color='grey', linestyle='--')
-    
+    ax.grid(color='grey', linestyle='--')    
+    if self.zoom:
+      ax_inset = ax.inset_axes([0.55, 0.55, 0.4, 0.3])
+      ax_inset.grid(color='grey', linestyle=':', alpha=0.6)
+      ax_inset.tick_params(axis='both', which='both', labelsize=8)
+      ax_inset.set_yscale(self.y_scale)
+
     cycler = itertools.cycle(defaults.color_cycle)
+    x_max_global = 0
+    zoom_y_min, zoom_y_max = float('inf'), float('-inf')
     for label, curve in self.curves.items():
       x_list, y_list = curve.xy
+      x_max_global = max(x_max_global, x_list[-1])
       color_n = next(cycler)
+      y_smoothed = moving_average(y_list, self.window)
+
       ax.plot(x_list, y_list, color=color_n, lw=defaults.lw_actual, alpha=defaults.alpha_actual)
-      ax.plot(x_list, moving_average(y_list, self.window), color=color_n,
-              label=label, linestyle=defaults.linestyle_smoothed, lw=defaults.lw_smoothed)
+      ax.plot(x_list, y_smoothed, color=color_n,label=label, linestyle=defaults.linestyle_smoothed, 
+              lw=defaults.lw_smoothed)
       
+      if self.zoom:
+        ax_inset.plot(x_list, y_list, color=color_n, lw=defaults.lw_actual, alpha=defaults.alpha_actual)
+        ax_inset.plot(x_list, y_smoothed, color=color_n, linestyle=defaults.linestyle_smoothed, 
+                   lw=defaults.lw_smoothed)
+
+        start_idx = int(len(y_list) * 0.8) 
+        local_subset = y_list[start_idx:]
+        if len(local_subset) > 0:
+            zoom_y_min = min(zoom_y_min, np.min(local_subset))
+            zoom_y_max = max(zoom_y_max, np.max(local_subset))
+
+    if self.zoom:
+      x1, x2 = x_max_global * 0.8, x_max_global
+      ax_inset.set_xlim(x1, x2)
+      ax_inset.set_ylim(zoom_y_min, zoom_y_max)
+      mark_inset(ax, ax_inset, loc1=2, loc2=4, fc="none", ec="0.5")
+
     for x in self.VX:
       ax.axvline(x=x, color='black', linestyle='-', linewidth=1)
       ax.text(x+0.08, ax.get_ylim()[0]+0.08, f'{x}', verticalalignment='center', rotation=90, color='black')
