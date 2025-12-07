@@ -26,7 +26,8 @@ class Curve:
     if points: self.add(points) 
 
   def add(self, points:list[tuple[float, float]]): 
-    self.buffer.extend(points)
+    points_filtered = filter(lambda x: x[1] is not None and x[0] is not None, points)
+    self.buffer.extend(points_filtered)
 
   def __len__(self): 
     return len(self.buffer)
@@ -70,6 +71,7 @@ class Subplot:
     x_max_global = 0
     zoom_y_min, zoom_y_max = float('inf'), float('-inf')
     for label, curve in self.curves.items():
+      if len(curve) == 0: continue
       x_list, y_list = curve.xy
       x_max_global = max(x_max_global, x_list[-1])
       color_n = next(cycler)
