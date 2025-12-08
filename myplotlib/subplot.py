@@ -49,9 +49,11 @@ class Subplot:
     self.y_scale = y_scale 
     self.window  = window
   
-  def update(self, update_dict:dict[str, list[tuple[float,float]]]):
+  def update(self, update_dict:dict[str, tuple[float,float]|list[tuple[float,float]]]):
     # TODO update VX lines.
-    for key, points in update_dict.items(): self.curves[key].add(points)
+    for key, points in update_dict.items():
+      if isinstance(points, tuple): points = [points]
+      self.curves[key].add(points)
 
   def plot_on_ax(self, ax:plt.Axes):
     ax.clear()

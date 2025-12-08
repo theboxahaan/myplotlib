@@ -16,6 +16,6 @@ if __name__ == '__main__':
   for _x,_y in zip(x,y):
     grid.update([{'first':[(_x,_y)], 'second':[(_x,_y+10)], 'third':[(_x,_y-10 if _y>1 else None)]},
                  {'first':[(_x,_y)], 'second':[(_x, _y+1.2)]},
-                 {'first':[(_x,_y)], 'second':[(_x, _y+1.2)]}])
+                 {'first':[(_x,_y)], 'second':(_x, _y+1.2)}])
   
   grid.plot()
