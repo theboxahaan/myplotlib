@@ -19,6 +19,19 @@ def moving_average(arr:list[float]|np.ndarray=None, window_size:int=1, smooth_in
   if smooth_inital: conv_arr[:window_size] = conv_arr[window_size]
   return conv_arr
 
+def gaussian_smooth(arr:np.ndarray, sigma:float=2.0) -> np.ndarray:
+  """
+  TODO generate docstring
+  """
+  if not isinstance(arr, np.ndarray): arr = np.asarray(arr)
+  radius = int(4 * sigma)
+  x = np.arange(-radius, radius + 1)
+  kernel = np.exp(-x**2 / (2 * sigma**2))
+  kernel = kernel / np.sum(kernel)
+  padded = np.pad(arr, (radius, radius), mode='edge')
+  smoothed = np.convolve(padded, kernel, mode='valid')
+  return smoothed
+
 class Curve:
   def __init__(self, name:str='', points:list[tuple[float,float]]=None):
     self.name   = name
@@ -77,7 +90,7 @@ class Subplot:
       x_list, y_list = curve.xy
       x_max_global = max(x_max_global, x_list[-1])
       color_n = next(cycler)
-      y_smoothed = moving_average(y_list, self.window)
+      y_smoothed = gaussian_smooth(y_list, self.window)
 
       ax.plot(x_list, y_list, color=color_n, lw=defaults.lw_actual, alpha=defaults.alpha_actual)
       ax.plot(x_list, y_smoothed, color=color_n,label=label, linestyle=defaults.linestyle_smoothed, 

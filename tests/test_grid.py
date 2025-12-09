@@ -9,9 +9,9 @@ if __name__ == '__main__':
   print(y)
 
   grid = Grid(subplots=[
-    Subplot(title='First Plot',labels=['first', 'second', 'third'], window=10), 
-    Subplot(title='Second Plot', labels=['first', 'second'], window=30),
-    Subplot(title='Third Plot', labels=['first', 'second'], window=30, zoom=True)
+    Subplot(title='First Plot',labels=['first', 'second', 'third'], window=2), 
+    Subplot(title='Second Plot', labels=['first', 'second'], window=5),
+    Subplot(title='Third Plot', labels=['first', 'second'], window=5, zoom=True)
     ], max_cols=3)
   for _x,_y in zip(x,y):
     grid.update([{'first':[(_x,_y)], 'second':[(_x,_y+10)], 'third':[(_x,_y-10 if _y>1 else None)]},
