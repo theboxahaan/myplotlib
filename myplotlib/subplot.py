@@ -19,11 +19,12 @@ def moving_average(arr:list[float]|np.ndarray=None, window_size:int=1, smooth_in
   if smooth_inital: conv_arr[:window_size] = conv_arr[window_size]
   return conv_arr
 
-def gaussian_smooth(arr:np.ndarray, sigma:float=2.0) -> np.ndarray:
+def gaussian_smooth(arr:np.ndarray, sigma:float=0.) -> np.ndarray:
   """
   TODO generate docstring
   """
   if not isinstance(arr, np.ndarray): arr = np.asarray(arr)
+  if sigma < 0.25: return arr
   radius = int(4 * sigma)
   x = np.arange(-radius, radius + 1)
   kernel = np.exp(-x**2 / (2 * sigma**2))
