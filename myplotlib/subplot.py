@@ -9,8 +9,8 @@ from . import defaults
 __all__ = ['Subplot', 'Grid']
 
 def moving_average(arr:list[float]|np.ndarray=None, window_size:int=1, smooth_inital:bool=False) -> np.ndarray:
-  """compute the sliding window average using np.convolve
-  returns numpy array containing the smoothed plot
+  """ compute the sliding window average using np.convolve returns numpy array containing the 
+  smoothed plot.
   """
   if not isinstance(arr, np.ndarray): arr = np.asarray(arr)
   if arr.shape[0] <= window_size: return arr
@@ -25,8 +25,8 @@ def gaussian_smooth(arr:np.ndarray, sigma:float=0.) -> np.ndarray:
   """
   if not isinstance(arr, np.ndarray): arr = np.asarray(arr)
   if sigma < 0.25: return arr
-  radius = int(4 * sigma)
-  x = np.arange(-radius, radius + 1)
+  radius = int(4*sigma)
+  x = np.arange(-radius, radius+1)
   kernel = np.exp(-x**2 / (2 * sigma**2))
   kernel = kernel / np.sum(kernel)
   padded = np.pad(arr, (radius, radius), mode='edge')
@@ -78,8 +78,8 @@ class Subplot:
     ax.spines['left'].set_color('black')
     ax.grid(color='grey', linestyle='--')    
     if self.zoom:
-      ax_inset = ax.inset_axes([0.55, 0.55, 0.4, 0.3])
-      ax_inset.grid(color='grey', linestyle=':', alpha=0.6)
+      ax_inset = ax.inset_axes(defaults.inset_ax_size)
+      ax_inset.grid(color='grey', linestyle=defaults.inset_ax_linestyle, alpha=defaults.inset_ax_alpha)
       ax_inset.tick_params(axis='both', which='both', labelsize=8)
       ax_inset.set_yscale(self.y_scale)
 

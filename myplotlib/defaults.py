@@ -7,3 +7,8 @@ lw_actual          = 0.4
 lw_smoothed        = 1
 linestyle_actual   = '-'
 linestyle_smoothed = '--'
+
+# inset axes configurations
+inset_ax_size      = [0.55, 0.55, 0.4, 0.3]
+inset_ax_alpha     = 0.6 
+inset_ax_linestyle = ':'
