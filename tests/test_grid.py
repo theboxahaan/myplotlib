@@ -18,6 +18,6 @@ if __name__ == '__main__':
                  {'first':[(_x,_y)], 'second':[(_x, _y+1.2)]},
                  {'first':[(_x,_y)], 'second':(_x, _y+1.2)}])
 
-  grid.update_vx([[], [3.2, 5.5], [0.1]]) 
+  grid.update_vx([[], [3.2, 5.5], 0.1]) 
   grid.plot()
   grid.close()
