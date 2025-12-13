@@ -64,10 +64,12 @@ class Subplot:
     self.window  = window
   
   def update(self, update_dict:dict[str, tuple[float,float]|list[tuple[float,float]]]):
-    # TODO update VX lines.
     for key, points in update_dict.items():
       if isinstance(points, tuple): points = [points]
       self.curves[key].add(points)
+
+  def update_vx(self, update_list:list[float]=None):
+    if update_list is not None: self.VX.extend(update_list)
 
   def plot_on_ax(self, ax:plt.Axes):
     ax.clear()
@@ -118,7 +120,8 @@ class Subplot:
 
     for x in self.VX:
       ax.axvline(x=x, color='black', linestyle='-', linewidth=1)
-      ax.text(x+0.08, ax.get_ylim()[0]+0.08, f'{x}', verticalalignment='center', rotation=90, color='black')
+      # TODO add a dynamic scaling offset for better visibility
+      ax.text(x, ax.get_ylim()[0], f'{x}', verticalalignment='center', rotation=90, color='black')
     
     axis_handles, axis_labels= ax.get_legend_handles_labels()
     ax.legend(axis_handles, axis_labels, loc='best')
@@ -136,6 +139,9 @@ class Grid:
   def update(self, update_list:list[dict[str, list[tuple[float,float]]]]):
     for subplot, update_d in zip(self.subplot_list, update_list):
       subplot.update(update_dict=update_d)
+  
+  def update_vx(self, update_list:list[list[float]]=None):
+    for subplot, update_list_l in zip(self.subplot_list, update_list): subplot.update_vx(update_list_l)
 
   def plot(self, loc:str='plot'):
     for ctr, subplot in enumerate(self.subplot_list):
