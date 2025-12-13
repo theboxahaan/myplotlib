@@ -97,7 +97,8 @@ class Subplot:
       ax.plot(x_list, y_smoothed, color=color_n,label=label, linestyle=defaults.linestyle_smoothed, 
               lw=defaults.lw_smoothed)
       
-      if self.zoom:
+      if self.zoom and len(curve)>1:
+        # this does not avoid the singular plot error if there are two points with the same x
         ax_inset.plot(x_list, y_list, color=color_n, lw=defaults.lw_actual, alpha=defaults.alpha_actual)
         ax_inset.plot(x_list, y_smoothed, color=color_n, linestyle=defaults.linestyle_smoothed, 
                    lw=defaults.lw_smoothed)
