@@ -69,7 +69,8 @@ class Subplot:
       self.curves[key].add(points)
 
   def update_vx(self, update_list:list[float]=None):
-    if update_list is not None: self.VX.extend(update_list)
+    if isinstance(update_list, float): update_list = [update_list]
+    self.VX.extend(update_list)
 
   def plot_on_ax(self, ax:plt.Axes):
     ax.clear()
