@@ -109,10 +109,11 @@ class Subplot:
             zoom_y_min = min(zoom_y_min, np.min(local_subset))
             zoom_y_max = max(zoom_y_max, np.max(local_subset))
 
-    if self.zoom:
+    if self.zoom and zoom_y_max > zoom_y_min:
       x1, x2 = x_max_global * 0.8, x_max_global
       ax_inset.set_xlim(x1, x2)
-      ax_inset.set_ylim(zoom_y_min*(1-0.2), zoom_y_max*(1+0.2))
+      margin = (zoom_y_max - zoom_y_min)*0.2
+      ax_inset.set_ylim(zoom_y_min - margin, zoom_y_max + margin)
       mark_inset(ax, ax_inset, loc1=2, loc2=4, fc="none", ec="0.5")
 
     for x in self.VX:
