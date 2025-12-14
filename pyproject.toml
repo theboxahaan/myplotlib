@@ -1,3 +1,6 @@
 [project]
 name = "myplotlib"
 version = "0.0.1"
+description = "A matplotlib wrapper to make gridplots"
+authors = [{name="Ahaan Dabholkar", email="adabholk@purdue.edu"}]
+dependencies = ["matplotlib"]
