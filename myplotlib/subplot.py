@@ -134,7 +134,7 @@ class Grid:
     self.ncol = len(self.subplot_list) if max_cols == -1 else min(max_cols, len(self.subplot_list))
     self.nrow = max(1, math.ceil(len(self.subplot_list)/self.ncol))
     self.fig, self.axs = plt.subplots(self.nrow, self.ncol, 
-                                      figsize=(defaults.figsize[0]*self.ncol,defaults.figsize[0]*self.nrow), 
+                                      figsize=(defaults.figsize[0]*self.ncol,defaults.figsize[1]*self.nrow), 
                                       constrained_layout=True, squeeze=False)
     
   def update(self, update_list:list[dict[str, list[tuple[float,float]]]]):
