@@ -43,8 +43,7 @@ class Curve:
     points_filtered = filter(lambda x: x[1] is not None and x[0] is not None, points)
     self.buffer.extend(points_filtered)
 
-  def __len__(self): 
-    return len(self.buffer)
+  def __len__(self): return len(self.buffer)
 
   @property
   def xy(self) -> tuple[np.ndarray, np.ndarray]:
@@ -144,13 +143,12 @@ class Grid:
   def update_vx(self, update_list:list[list[float]]=None):
     for subplot, update_list_l in zip(self.subplot_list, update_list): subplot.update_vx(update_list_l)
 
-  def plot(self, loc:str='plot'):
+  def plot(self, loc:str='plot', dpi:int=100):
     for ctr, subplot in enumerate(self.subplot_list):
       r, c = ctr//self.ncol, ctr%self.ncol
       subplot.plot_on_ax(self.axs[r,c])
     for i in range(len(self.subplot_list), self.ncol*self.nrow):
       self.fig.delaxes(self.axs[i//self.ncol, i%self.ncol])
-    self.fig.savefig(f'{loc}.png', dpi=100, bbox_inches='tight')
+    self.fig.savefig(f'{loc}.png', dpi=dpi, bbox_inches='tight')
   
-  def close(self):
-    plt.close(self.fig)
+  def close(self): plt.close(self.fig)
