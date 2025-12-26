@@ -126,6 +126,15 @@ class Subplot:
     axis_handles, axis_labels= ax.get_legend_handles_labels()
     ax.legend(axis_handles, axis_labels, loc='best')
 
+  def dump(self, loc:str=None):
+    """ dump subplot data to loc """
+    title = '_'.join(self.title.lower().split(' '))
+    for label, curve in self.curves.items():
+      x_list, y_list = curve.xy
+      name = '_'.join(label.lower().split(' '))
+      with open(f'{loc}/{title}_{name}.txt', 'w') as fd:
+        for x, y in zip(x_list, y_list): fd.write(f'{x},{y}\n')
+
 class Grid:
   """ A `Grid` is a container of `Subplot` objects to be used for convenient plotting and updating """
   def __init__(self, subplots:list[Subplot]=None, max_cols:int=-1):
@@ -150,5 +159,8 @@ class Grid:
     for i in range(len(self.subplot_list), self.ncol*self.nrow):
       self.fig.delaxes(self.axs[i//self.ncol, i%self.ncol])
     self.fig.savefig(f'{loc}.png', dpi=dpi, bbox_inches='tight')
+  
+  def dump(self, loc:str=None):
+    for subplot in self.subplot_list: subplot.dump(loc=loc)
   
   def close(self): plt.close(self.fig)

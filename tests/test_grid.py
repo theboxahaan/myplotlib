@@ -1,3 +1,4 @@
+import os
 import numpy as np
 
 from myplotlib import Grid, Subplot
@@ -20,4 +21,5 @@ if __name__ == '__main__':
 
   grid.update_vx([[], [3.2, 5.5], 0.1]) 
   grid.plot()
+  grid.dump(f'{os.getcwd()}')
   grid.close()
